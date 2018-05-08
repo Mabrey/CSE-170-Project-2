@@ -130,11 +130,11 @@ void MyViewer::build_scene ()
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				snGroups.at(i) = new SnGroup;
-				snGroups.at(i)->separator(true);
-				snGroups.at(i)->add(gridOfCubes.at(i).at(j).at(k));
-				snGroups.at(i)->top<SnModel>()->color(GsColor::blue);
-				rootg()->add(snGroups.at(i));
+				snGroups.at(i).at(j).at(k) = new SnGroup;
+				snGroups.at(i).at(j).at(k)->separator(true);
+				snGroups.at(i).at(j).at(k)->add(new SnModel(gridOfCubes.at(i).at(j).at(k)));
+				snGroups.at(i).at(j).at(k)->top<SnModel>()->color(GsColor::blue);
+				rootg()->add(snGroups.at(i).at(j).at(k));
 			}
 		}
 	}
