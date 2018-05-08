@@ -102,7 +102,7 @@ void generateFaces(Cube cube, GsModel * m)
 void MyViewer::build_scene ()
 {
 	ThreeD<GsModel*> gridOfCubes(4, vector<vector<GsModel*>>(4, vector<GsModel*>(4)));
-	vector<SnGroup*> snGroups(64);
+	ThreeD<SnGroup*> snGroups (4, vector<vector<SnGroup*>>(4, vector<SnGroup*>(4)));
 
 
 	MarchingCubes march = MarchingCubes();
@@ -119,7 +119,7 @@ void MyViewer::build_scene ()
 			{
 				GsModel* m = new GsModel;
 				generateFaces(march.gridCubes.at(i).at(j).at(k), m);
-				gridOfCubes.at(i) = m;
+				gridOfCubes.at(i).at(j).at(k) = m;
 			}
 		}
 	}
