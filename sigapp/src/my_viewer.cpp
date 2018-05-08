@@ -54,6 +54,7 @@ void MyViewer::add_model ( SnShape* s, GsVec p )
 
 void generateFaces(Cube cube, GsModel * m)
 {
+
 	while (!m->V.empty())
 	{
 		m->V.pop();
@@ -75,7 +76,7 @@ void generateFaces(Cube cube, GsModel * m)
 	f2.set(0, 6, 4);	//back face 2
 	f3.set(0, 1, 3);	//left face 1
 	f4.set(0, 3, 2);	//left face 2
-	f5.set(1, 5, 3);	//front face 1
+	f5.set(1, 5, 7);	//front face 1
 	f6.set(1, 7, 3);	//front face 2
 	f7.set(5, 4, 6);	//right face 1
 	f8.set(5, 6, 7);	//right face 2
@@ -101,8 +102,10 @@ void generateFaces(Cube cube, GsModel * m)
 
 void MyViewer::build_scene ()
 {
-	ThreeD<GsModel*> gridOfCubes(4, vector<vector<GsModel*>>(4, vector<GsModel*>(4)));
-	ThreeD<SnGroup*> snGroups (4, vector<vector<SnGroup*>>(4, vector<SnGroup*>(4)));
+	
+
+	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(4, vector<vector<GsModel*>>(4, vector<GsModel*>(4)));
+	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(4, vector<vector<SnGroup*>>(4, vector<SnGroup*>(4)));
 
 
 	MarchingCubes march = MarchingCubes();
@@ -110,31 +113,35 @@ void MyViewer::build_scene ()
 	//retrieve grid points and store in ThreeD vec
 	march.gridPoints = march.generateGrid(5);
 	march.gridCubes = march.generateCubes(march.gridPoints, 5);
-
+	
+	
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
 			for (int k = 0; k < 4; k++)
 			{
+				int sizeI = march.gridCubes.at(i).size();
+				int sizeJ = march.gridCubes.at(i).at(j).size();
+				int size = march.gridCubes.size();
 				GsModel* m = new GsModel;
-				generateFaces(march.gridCubes.at(i).at(j).at(k), m);
-				gridOfCubes.at(i).at(j).at(k) = m;
+				generateFaces(march.gridCubes[i][j][k], m);
+				gridOfCubes[i][j][k] = m;
 			}
 		}
 	}
 
-	for (int i = 0; i < snGroups.size(); i++) 
+	for (int i = 0; i < 4; i++) 
 	{
 		for (int j = 0; j < 4; j++)
 		{
 			for (int k = 0; k < 4; k++)
 			{
-				snGroups.at(i).at(j).at(k) = new SnGroup;
-				snGroups.at(i).at(j).at(k)->separator(true);
-				snGroups.at(i).at(j).at(k)->add(new SnModel(gridOfCubes.at(i).at(j).at(k)));
-				snGroups.at(i).at(j).at(k)->top<SnModel>()->color(GsColor::blue);
-				rootg()->add(snGroups.at(i).at(j).at(k));
+				snGroups[i][j][k] = new SnGroup;
+				snGroups[i][j][k]->separator(true);
+				snGroups[i][j][k]->add(new SnModel(gridOfCubes.at(i).at(j).at(k)));
+				snGroups[i][j][k]->top<SnModel>()->color(GsColor::blue);
+				rootg()->add(snGroups[i][j][k]);
 			}
 		}
 	}
@@ -181,7 +188,7 @@ int MyViewer::handle_keyboard ( const GsEvent &e )
 
 	switch ( e.key )
 	{	case GsEvent::KeyEsc : gs_exit(); return 1;
-		case 'n' : { bool b=!_nbut->value(); _nbut->value(b); show_normals(b); return 1; }
+		//case 'n' : { bool b=!_nbut->value(); _nbut->value(b); show_normals(b); return 1; }
 		default: gsout<<"Key pressed: "<<e.key<<gsnl;
 	}
 
@@ -191,7 +198,7 @@ int MyViewer::handle_keyboard ( const GsEvent &e )
 int MyViewer::uievent ( int e )
 {
 	switch ( e )
-	{	case EvNormals: show_normals(_nbut->value()); return 1;
+	{	//case EvNormals: show_normals(_nbut->value()); return 1;
 		case EvAnimate: run_animation(); return 1;
 		case EvExit: gs_exit();
 	}

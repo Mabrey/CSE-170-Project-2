@@ -16,12 +16,15 @@ ThreeD<GsVec> MarchingCubes::generateGrid(int resolution)
 {
 	int canvasSize = 10;
 	GsVec point;
-	ThreeD<GsPnt> grid(resolution, vector<vector<GsVec>>(resolution, vector<GsVec>(resolution)));
+	ThreeD<GsPnt> grid = ThreeD<GsPnt>(resolution, vector<vector<GsVec>>(resolution, vector<GsVec>(resolution)));
 	for(int i = 0; i < resolution; i++)
 		for(int j = 0; j < resolution; j++)
 			for (int k = 0; k < resolution; k++)
 			{
-				GsPnt newPoint = GsPnt(-(canvasSize / 2) + ((i * canvasSize) / resolution), -(canvasSize / 2) + ((j * canvasSize) / resolution), -(canvasSize / 2) + ((k * canvasSize) / resolution));
+				GsPnt newPoint = GsPnt(-(canvasSize / 2) + ((i * canvasSize) / resolution),
+					-(canvasSize / 2) + ((j * canvasSize) / resolution),
+					-(canvasSize / 2) + ((k * canvasSize) / resolution));
+
 				grid[i][j][k].set(newPoint);
 			}
 
@@ -33,7 +36,7 @@ ThreeD<GsVec> MarchingCubes::generateGrid(int resolution)
 ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<GsVec> gridPoints, int resolution)
 {
 	int canvasSize = 10;
-	ThreeD<Cube> gridCube(resolution - 1, vector<vector<Cube>>(resolution - 1, vector<Cube>(resolution - 1)));
+	ThreeD<Cube> gridCube = ThreeD<Cube>(resolution - 1, vector<vector<Cube>>(resolution - 1, vector<Cube>(resolution - 1)));
 	for (int i = 0; i < resolution - 1; i++)
 		for (int j = 0; j < resolution - 1; j++)
 			for (int k = 0; k < resolution - 1; k++)
@@ -42,41 +45,42 @@ ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<GsVec> gridPoints, int resoluti
 				
 				//back bottom left
 				Corner temp = Corner(gridPoints[i][j][k].x, gridPoints[i][j][k].y, gridPoints[i][j][k].z);
-				corners.at(0) = temp;
+				corners[0] = temp;
 
 				//front bottom left
 				temp = Corner(gridPoints[i][j][k + 1].x, gridPoints[i][j][k + 1].y, gridPoints[i][j][k + 1].z);
-				corners.at(1) = temp;
+				corners[1] = temp;
 
 				//back upper left
 				temp = Corner(gridPoints[i][j+1][k].x, gridPoints[i][j+1][k].y, gridPoints[i][j+1][k].z);
-				corners.at(2) = temp;
+				corners[2] = temp;
 
 				//front upper left
 				temp = Corner(gridPoints[i][j + 1][k+1].x, gridPoints[i][j + 1][k+1].y, gridPoints[i][j + 1][k+1].z);
-				corners.at(3) = temp;
+				corners[3] = temp;
 
 				//back bottom right
 				temp = Corner(gridPoints[i+1][j][k].x, gridPoints[i + 1][j][k].y, gridPoints[i + 1][j][k].z);
-				corners.at(4) = temp;
+				corners[4] = temp;
 
 				//front bottom right
 				temp = Corner(gridPoints[i + 1][j][k + 1].x, gridPoints[i + 1][j][k + 1].y, gridPoints[i + 1][j][k + 1].z);
-				corners.at(5) = temp;
+				corners[5] = temp;
 
 				//back upper right
 				temp = Corner(gridPoints[i + 1][j + 1][k].x, gridPoints[i + 1][j + 1][k].y, gridPoints[i + 1][j + 1][k].z);
-				corners.at(6) = temp;
+				corners[6] = temp;
 
 				//front upper right
 				temp = Corner(gridPoints[i + 1][j + 1][k + 1].x, gridPoints[i + 1][j + 1][k + 1].y, gridPoints[i + 1][j + 1][k + 1].z);
-				corners.at(7) = temp;
+				corners[7] = temp;
 
 
 				Cube newCube = Cube(gridPoints[i][j][k].x + (i * canvasSize) / (resolution * 2), gridPoints[i][j][k].y + (j * canvasSize) / (resolution * 2), gridPoints[i][j][k].z + (k * canvasSize) / (resolution * 2), corners);
+				gridCube[i][j][k] = newCube;
 			}
 	
-	return ThreeD<Cube>();
+	return gridCube;
 }
 
 Cube::Cube()

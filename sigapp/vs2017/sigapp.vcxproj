@@ -16,12 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\MarchingCubes.cpp" />
     <ClCompile Include="..\src\my_viewer.cpp" />
-    <ClCompile Include="MarchingCubes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\MarchingCubes.h" />
     <ClInclude Include="..\src\my_viewer.h" />
-    <ClInclude Include="MarchingCubes.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D439ED53-23FE-4EC8-9A4F-F0EE1EF50085}</ProjectGuid>
