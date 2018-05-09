@@ -114,7 +114,7 @@ void MyViewer::build_scene ()
 	MarchingCubes march = MarchingCubes();
 
 	//retrieve grid points and store in ThreeD vec
-	march.gridPoints = march.generateGrid(resolution + 1);
+	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
 	
 	
@@ -132,13 +132,8 @@ void MyViewer::build_scene ()
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
 
-				GsBox* b = new GsBox;
-				m->get_bounding_box(*b);
-				
-				gsout << march.gridCubes[i][j][k].center << "\n";
-
-
-
+				//gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
+			
 			}
 		}
 	}
