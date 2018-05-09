@@ -204,6 +204,17 @@ void Cube::findConfig() {
 	}
 }
 
+void Cube::findFaces(GsModel* m) {
+
+	GsModel::Face f1;
+	for (int i = 0; i < 15; i += 3) {
+		if (faces[config][i] != -1) {
+
+			f1.set(faces[config][i], faces[config][i + 1], faces[config][i + 2]);
+			m->F.push(f1);
+		}
+	}
+}
 
 Points::Points() 
 {
