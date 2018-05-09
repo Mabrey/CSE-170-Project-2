@@ -101,6 +101,17 @@ void generateFaces(Cube cube, GsModel * m)
 
 }
 
+void checkBoundary(GsVec velocity, int radius, int canvasSize) {
+
+	if (velocity.x + radius > canvasSize / 2 || velocity.x + radius < (canvasSize * -1) / 2)
+		velocity.x = velocity.x * -1;
+	else if (velocity.y + radius > canvasSize / 2 || velocity.y + radius < (canvasSize * -1) / 2)
+		velocity.y = velocity.y * -1;
+	else if (velocity.x + radius > canvasSize / 2 || velocity.x + radius < (canvasSize * -1) / 2)
+		velocity.z = velocity.z * -1;
+}
+
+
 void MyViewer::build_scene ()
 {
 	int resolution = 3;
@@ -132,8 +143,7 @@ void MyViewer::build_scene ()
 				
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
-
-				gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
+				gsout << "velocity: " << march.gridCubes[i][j][k].velocity << "\n";
 			
 			}
 		}
