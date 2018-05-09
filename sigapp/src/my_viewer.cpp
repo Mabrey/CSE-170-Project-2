@@ -113,7 +113,7 @@ void generateFaces(Cube cube, GsModel * m)
 
 void checkBoundary()
 {
-	int radius = 0.5;
+	float radius = 0.5;
 	int canvasSize = 10;
 
 	if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
@@ -211,7 +211,14 @@ void MyViewer::build_scene ()
 // Below is an example of how to control the main loop of an animation:
 void MyViewer::run_animation ()
 {
+	if (_animating) return; // avoid recursive calls
+	_animating = true;
 	
+	double frdt = 1.0 / 30.0;
+	double t = 0, lt = 0, t0 = gs_time();
+	do // run for a while:
+	{
+		while (t - lt < frdt) { ws_check(); t = gs_time() - t0; }
 		updateSpheres();
 		SnManipulator* manip = rootg()->get<SnManipulator>(0); // access one of the manipulators
 		GsMat m = manip->mat();
@@ -222,6 +229,7 @@ void MyViewer::run_animation ()
 		GsMat m2 = manip2->mat();
 		m2.setc4(spherePosition[1].x, spherePosition[1].y, spherePosition[1].z, 1);
 		manip2->initial_mat(m2);
+		checkBoundary();
 		//rootg()->remove_all();
 
 		//add_model(sphereA, spherePosition[0]);
@@ -229,7 +237,7 @@ void MyViewer::run_animation ()
 
 		render(); // notify it needs redraw
 		ws_check(); // redraw now
-
+	} while (true);
 	
 }
 
