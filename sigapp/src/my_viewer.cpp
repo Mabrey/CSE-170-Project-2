@@ -103,7 +103,7 @@ void generateFaces(Cube cube, GsModel * m)
 
 void MyViewer::build_scene ()
 {
-	int resolution = 2;
+	int resolution = 3;
 
 	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
 	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
@@ -117,6 +117,7 @@ void MyViewer::build_scene ()
 	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
 	
+	gsout << "offset: " << (10 / ((float)resolution * 2)) << "\n";
 	
 	for (int i = 0; i < resolution; i++)
 	{
@@ -132,7 +133,7 @@ void MyViewer::build_scene ()
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
 
-				//gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
+				gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
 			
 			}
 		}

@@ -14,7 +14,7 @@ MarchingCubes::~MarchingCubes()
 
 ThreeD<GsVec> MarchingCubes::generateGrid(int resolution)
 {
-	int canvasSize = 10;
+	float canvasSize = 10;
 	GsVec point;
 	ThreeD<GsPnt> grid = ThreeD<GsPnt>(resolution + 1, vector<vector<GsVec>>(resolution + 1, vector<GsVec>(resolution + 1)));
 	
@@ -27,6 +27,7 @@ ThreeD<GsVec> MarchingCubes::generateGrid(int resolution)
 					-(canvasSize / 2) + ((k * canvasSize) / resolution));
 
 				grid[i][j][k].set(newPoint);
+				gsout << "points "<< i << " " << j << " " << k << ": "  << newPoint << "\n";
 			}
 
 	return grid;
@@ -76,7 +77,8 @@ ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<GsVec> gridPoints, int resoluti
 				temp = Corner(gridPoints[i + 1][j + 1][k + 1].x, gridPoints[i + 1][j + 1][k + 1].y, gridPoints[i + 1][j + 1][k + 1].z);
 				corners[7] = temp;
 
-				Cube newCube = Cube(gridPoints[i][j][k].x + (i * canvasSize) / (resolution * 2), gridPoints[i][j][k].y + (j * canvasSize) / (resolution * 2), gridPoints[i][j][k].z + (k * canvasSize) / (resolution * 2), corners);
+
+				Cube newCube = Cube(gridPoints[i][j][k].x + (canvasSize / ((float) resolution * 2)), gridPoints[i][j][k].y + (canvasSize / ((float)resolution * 2)), gridPoints[i][j][k].z + (canvasSize / ((float)resolution * 2)), corners);
 				gridCube[i][j][k] = newCube;
 			}
 	
