@@ -10,15 +10,23 @@
 # include <sig/sn_manipulator.h>
 
 # include <sigogl/ws_run.h>
+# include <vector>
 
 template <typename T>
 using ThreeD = std::vector<std::vector<std::vector<T>>>;
-
+std::vector<GsVec> spherePosition = vector<GsVec>(2);
+std::vector<GsVec> sphereVelocity = vector<GsVec>(2);
 
 MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,w,h,l)
 {
 	_nbut=0;
 	_animating=false;
+	spherePosition[0] = (GsVec(gs_random(-2, 2), gs_random(-2, 2), gs_random(-2, 2)));
+	spherePosition[1] = (GsVec(gs_random(-2, 2), gs_random(-2, 2), gs_random(-2, 2)));
+
+	sphereVelocity[0] = (GsVec(0.1f * gs_random(-5, 5), 0.1f *gs_random(-5, 5), 0.1f * gs_random(-5, 5)));
+	sphereVelocity[1] = (GsVec(0.1f *gs_random(-5, 5), 0.1f * gs_random(-5, 5), 0.1f * gs_random(-5, 5)));
+
 	build_ui ();
 	build_scene ();
 }
@@ -113,6 +121,13 @@ void checkBoundary(GsVec center, GsVec velocity, int radius, int canvasSize) {
 
 SnPrimitive *sphereA, *sphereB;
 
+float influenceFromSources(GsPnt location) {
+	float influence = 0;
+	return 0;
+	//sphereA->
+}
+
+
 void MyViewer::build_scene ()
 {
 	int resolution = 3;
@@ -121,12 +136,12 @@ void MyViewer::build_scene ()
 	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
 	
 	MarchingCubes march = MarchingCubes();
-
+/*
 	//retrieve grid points and store in ThreeD vec
 	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
 	
-	gsout << "offset: " << (10 / ((float)resolution * 2)) << "\n";
+	
 	
 	for (int i = 0; i < resolution; i++)
 	{
@@ -134,19 +149,14 @@ void MyViewer::build_scene ()
 		{
 			for (int k = 0; k < resolution; k++)
 			{
-				int sizeI = march.gridCubes.at(i).size();
-				int sizeJ = march.gridCubes.at(i).at(j).size();
-				int size = march.gridCubes.size();
 				GsModel* m = new GsModel;
 				
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
-				gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
-			
 			}
 		}
 	}
-
+	
 	for (int i = 0; i < resolution; i++)
 	{
 		for (int j = 0; j < resolution; j++)
@@ -162,14 +172,14 @@ void MyViewer::build_scene ()
 			}
 		}
 	}
-	
-	sphereA = new SnPrimitive(GsPrimitive::Sphere, 2);
+	*/
+	sphereA = new SnPrimitive(GsPrimitive::Sphere, 0.5);
 	sphereA->prim().material.diffuse = GsColor::red;
-	add_model(sphereA, GsVec(-5, 0, 0));
+	add_model(sphereA, spherePosition[0]);
 
-	sphereB = new SnPrimitive(GsPrimitive::Sphere, 2);
+	sphereB = new SnPrimitive(GsPrimitive::Sphere, 0.5);
 	sphereB->prim().material.diffuse = GsColor::red;
-	add_model(sphereB, GsVec(5, 0, 0));
+	add_model(sphereB, spherePosition[1]);
 }
 
 // Below is an example of how to control the main loop of an animation:
