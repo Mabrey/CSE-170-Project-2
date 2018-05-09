@@ -111,14 +111,24 @@ void generateFaces(Cube cube, GsModel * m)
 
 }
 
-void checkBoundary(GsVec center, GsVec velocity, int radius, int canvasSize) {
+void checkBoundary()
+{
+	int radius = 0.5;
+	int canvasSize = 10;
 
-	if (center.x + radius > canvasSize / 2 || center.x + radius < (canvasSize * -1) / 2)
-		velocity.x = velocity.x * -1;
-	else if (center.y + radius > canvasSize / 2 || center.y + radius < (canvasSize * -1) / 2)
-		velocity.y = velocity.y * -1;
-	else if (center.x + radius > canvasSize / 2 || center.x + radius < (canvasSize * -1) / 2)
-		velocity.z = velocity.z * -1;
+	if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].x = sphereVelocity[1].x * -1;
+	else if (spherePosition[0].y + radius > canvasSize / 2 || spherePosition[1].y + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].y = sphereVelocity[1].y * -1;
+	else if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].z = sphereVelocity[1].z * -1;
+
+	if (spherePosition[1].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
+		sphereVelocity[1].x = sphereVelocity[1].x * -1;
+	else if (spherePosition[1].y + radius > canvasSize / 2 || spherePosition[1].y + radius < (canvasSize * -1) / 2)
+		sphereVelocity[1].y = sphereVelocity[1].y * -1;
+	else if (spherePosition[1].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
+		sphereVelocity[1].z = sphereVelocity[1].z * -1;
 }
 
 
