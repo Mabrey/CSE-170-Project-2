@@ -193,7 +193,7 @@ void MyViewer::build_scene ()
 
 	//retrieve grid points and store in ThreeD vec
 	march.gridPoints = march.generateGrid(resolution);
-	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
+	march.generateCubes(march.gridCubes, march.gridPoints, resolution);
 		
 	for (int i = 0; i < resolution; i++)
 	{
@@ -244,7 +244,21 @@ void MyViewer::run_animation ()
 	do // run for a while:
 	{
 		while (t - lt < frdt) { ws_check(); t = gs_time() - t0; }
+
+		rootg()->remove_all();
+
 		updateSpheres();
+
+		sphereA = new SnPrimitive(GsPrimitive::Sphere, 1);
+		sphereA->prim().material.diffuse = GsColor::red;
+		sphereB = new SnPrimitive(GsPrimitive::Sphere, 1);
+		sphereB->prim().material.diffuse = GsColor::red;
+		add_model(sphereA, spherePosition[0]);
+		add_model(sphereB, spherePosition[1]);
+
+
+
+		/*
 		SnManipulator* manip = rootg()->get<SnManipulator>(0); // access one of the manipulators
 		GsMat m = manip->mat();
 		m.setc4(spherePosition[0].x, spherePosition[0].y, spherePosition[0].z, 1);
@@ -254,8 +268,11 @@ void MyViewer::run_animation ()
 		GsMat m2 = manip2->mat();
 		m2.setc4(spherePosition[1].x, spherePosition[1].y, spherePosition[1].z, 1);
 		manip2->initial_mat(m2);
+		*/
+
 		checkBoundary();	
 		updateGrid();
+		
 
 		for (int i = 0; i < resolution; i++)
 		{
@@ -264,6 +281,7 @@ void MyViewer::run_animation ()
 				for (int k = 0; k < resolution; k++)
 				{
 					GsModel *m = new GsModel();
+					march.gridCubes[i][j][k].findConfig();
 					march.gridCubes[i][j][k].findFaces(m);
 					SnGroup* g = new SnGroup();
 					g->separator(true);
@@ -276,7 +294,7 @@ void MyViewer::run_animation ()
 
 
 		render(); // notify it needs redraw
-		ws_check(); // redraw now
+		//ws_check(); // redraw now
 	} while (true);
 	
 }

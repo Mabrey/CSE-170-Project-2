@@ -304,7 +304,7 @@ public:
 	int resolution;
 
 	ThreeD<Points> generateGrid(int resolution);
-	ThreeD<Cube> generateCubes(ThreeD<Points> &gridPoints, int resolution);
+	void generateCubes(ThreeD<Cube> &gridCubes, ThreeD<Points> &gridPoints, int resolution);
 
 };
 

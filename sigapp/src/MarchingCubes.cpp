@@ -30,7 +30,7 @@ ThreeD<Points> MarchingCubes::generateGrid(int resolution)
 				grid[i][j][k].value = 0;
 				grid[i][j][k].isInside = false;
 				
-				gsout << "points "<< i << " " << j << " " << k << ": "  << newPoint << "\n";
+				//gsout << "points "<< i << " " << j << " " << k << ": "  << newPoint << "\n";
 			}
 
 	return grid;
@@ -38,8 +38,9 @@ ThreeD<Points> MarchingCubes::generateGrid(int resolution)
 
 
 
-ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> &gridPoints, int resolution)
+void MarchingCubes::generateCubes(ThreeD<Cube> &gridCubes, ThreeD<Points> &gridPoints, int resolution)
 {
+	gridCubes = ThreeD<Cube>(10);
 	int canvasSize = 10;
 	ThreeD<Cube> gridCube = ThreeD<Cube>(resolution, vector<vector<Cube>>(resolution, vector<Cube>(resolution)));
 	for (int i = 0; i < resolution; i++)
@@ -47,11 +48,12 @@ ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> &gridPoints, int resolu
 			for (int k = 0; k < resolution; k++)
 			{
 				vector<Points> corners(8);
-
+				
 				//back bottom left
 				Points temp = Points(gridPoints[i][j][k].point.x, gridPoints[i][j][k].point.y, gridPoints[i][j][k].point.z);
 				corners[0] = temp;
-				*corners[0].cornerVal = gridPoints[i][j][k].value;
+				*gridCubes[i][j][k].corners[0].cornerVal = gridPoints[i][j][k].value;
+				*gridCubes[i][j][k].corners[0].cornerVal = gridPoints[i][j][k].value;
 
 				//front bottom left
 				temp = Points(gridPoints[i][j][k + 1].point.x, gridPoints[i][j][k + 1].point.y, gridPoints[i][j][k + 1].point.z);
@@ -96,7 +98,7 @@ ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> &gridPoints, int resolu
 				gridCube[i][j][k] = newCube;
 			}
 	
-	return gridCube;
+	return;
 }
 
 Cube::Cube()
