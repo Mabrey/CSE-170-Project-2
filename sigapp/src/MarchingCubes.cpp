@@ -103,6 +103,82 @@ Cube::Cube(float x, float y, float z, vector<Points> newCorners)
 	corners = newCorners;
 }
 
+void Cube::findMidpoints() {
+
+	Points temp;
+	//midpoint 0
+	temp.point.x = (corners[0].point.x + corners[1].point.x) / 2;
+	temp.point.y = (corners[0].point.y + corners[1].point.y) / 2;
+	temp.point.z = (corners[0].point.z + corners[1].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 1
+	temp.point.x = (corners[1].point.x + corners[2].point.x) / 2;
+	temp.point.y = (corners[1].point.y + corners[2].point.y) / 2;
+	temp.point.z = (corners[1].point.z + corners[2].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 2
+	temp.point.x = (corners[2].point.x + corners[3].point.x) / 2;
+	temp.point.y = (corners[2].point.y + corners[3].point.y) / 2;
+	temp.point.z = (corners[2].point.z + corners[3].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 3
+	temp.point.x = (corners[3].point.x + corners[0].point.x) / 2;
+	temp.point.y = (corners[3].point.y + corners[0].point.y) / 2;
+	temp.point.z = (corners[3].point.z + corners[0].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 4
+	temp.point.x = (corners[4].point.x + corners[5].point.x) / 2;
+	temp.point.y = (corners[4].point.y + corners[5].point.y) / 2;
+	temp.point.z = (corners[4].point.z + corners[5].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 5
+	temp.point.x = (corners[5].point.x + corners[6].point.x) / 2;
+	temp.point.y = (corners[5].point.y + corners[6].point.y) / 2;
+	temp.point.z = (corners[5].point.z + corners[6].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 6
+	temp.point.x = (corners[6].point.x + corners[7].point.x) / 2;
+	temp.point.y = (corners[6].point.y + corners[7].point.y) / 2;
+	temp.point.z = (corners[6].point.z + corners[7].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 7
+	temp.point.x = (corners[7].point.x + corners[4].point.x) / 2;
+	temp.point.y = (corners[7].point.y + corners[4].point.y) / 2;
+	temp.point.z = (corners[7].point.z + corners[4].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 8
+	temp.point.x = (corners[0].point.x + corners[4].point.x) / 2;
+	temp.point.y = (corners[0].point.y + corners[4].point.y) / 2;
+	temp.point.z = (corners[0].point.z + corners[4].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 9
+	temp.point.x = (corners[1].point.x + corners[5].point.x) / 2;
+	temp.point.y = (corners[1].point.y + corners[5].point.y) / 2;
+	temp.point.z = (corners[1].point.z + corners[5].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 10
+	temp.point.x = (corners[3].point.x + corners[7].point.x) / 2;
+	temp.point.y = (corners[3].point.y + corners[7].point.y) / 2;
+	temp.point.z = (corners[3].point.z + corners[7].point.z) / 2;
+	midpoints.push_back(temp);
+
+	//midpoint 11
+	temp.point.x = (corners[2].point.x + corners[6].point.x) / 2;
+	temp.point.y = (corners[2].point.y + corners[6].point.y) / 2;
+	temp.point.z = (corners[2].point.z + corners[6].point.z) / 2;
+	midpoints.push_back(temp);
+}
+
 
 Points::Points() 
 {

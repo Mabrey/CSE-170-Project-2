@@ -23,10 +23,12 @@ public:
 	//float size;
 	float value;
 	vector<Points> corners;
+	vector<Points> midpoints;
 
 	Cube();
 	Cube(float x, float y, float z);
 	Cube(float x, float y, float z, vector<Points> newCorners);
+	void findMidpoints();
 };
 
 class MarchingCubes
