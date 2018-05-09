@@ -28,6 +28,7 @@ public:
 	Cube();
 	Cube(float x, float y, float z);
 	Cube(float x, float y, float z, vector<Points> newCorners);
+
 	void findMidpoints();
 };
 
@@ -39,11 +40,11 @@ public:
 	MarchingCubes();
 	~MarchingCubes();
 	ThreeD<Cube> gridCubes;
-	ThreeD<GsPnt> gridPoints;
+	ThreeD<Points> gridPoints;
 	int resolution;
 
-	ThreeD<GsPnt> generateGrid(int resolution);
-	ThreeD<Cube> generateCubes(ThreeD<GsVec> gridPoints, int resolution);
+	ThreeD<Points> generateGrid(int resolution);
+	ThreeD<Cube> generateCubes(ThreeD<Points> gridPoints, int resolution);
 
 };
 

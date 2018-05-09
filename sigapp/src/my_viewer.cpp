@@ -18,6 +18,7 @@ std::vector<GsVec> spherePosition = vector<GsVec>(2);
 std::vector<GsVec> sphereVelocity = vector<GsVec>(2);
 bool initialized = false;
 SnPrimitive *sphereA, *sphereB;
+MarchingCubes march;
 
 MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,w,h,l)
 {
@@ -157,6 +158,10 @@ void updateSpheres()
 	spherePosition[1] += sphereVelocity[1];
 }
 
+void updateGrid()
+{
+	return;
+}
 
 void MyViewer::build_scene ()
 {
@@ -166,8 +171,8 @@ void MyViewer::build_scene ()
 	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
 	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
 	
-	MarchingCubes march = MarchingCubes();
-/*
+	march = MarchingCubes();
+
 	//retrieve grid points and store in ThreeD vec
 	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
@@ -188,7 +193,9 @@ void MyViewer::build_scene ()
 		}
 	}
 	
-	for (int i = 0; i < resolution; i++)
+
+
+/*	for (int i = 0; i < resolution; i++)
 	{
 		for (int j = 0; j < resolution; j++)
 		{
