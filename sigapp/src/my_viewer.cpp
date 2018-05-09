@@ -131,13 +131,25 @@ void checkBoundary()
 		sphereVelocity[1].z = sphereVelocity[1].z * -1;
 }
 
-
+float square(float x)
+{
+	float square = x * x;
+	return square;
+}
 
 float influenceFromSources(GsPnt location) {
 	float influence = 0;
-	return 0;
-	//sphereA->
+	for (size_t i = 0; i < spherePosition.size(); i++)
+	{
+		GsVec vect = spherePosition[i] - location;
+		float dist2 = square(spherePosition[i].x) + square(spherePosition[i].y) + square(spherePosition[i].z);
+		influence += (1 / sqrt(dist2));
+	}
+	return influence;
+	
 }
+
+
 
 void updateSpheres()
 {
