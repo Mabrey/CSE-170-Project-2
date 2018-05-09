@@ -16,6 +16,8 @@ template <typename T>
 using ThreeD = std::vector<std::vector<std::vector<T>>>;
 std::vector<GsVec> spherePosition = vector<GsVec>(2);
 std::vector<GsVec> sphereVelocity = vector<GsVec>(2);
+bool initialized = false;
+SnPrimitive *sphereA, *sphereB;
 
 MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,w,h,l)
 {
@@ -119,7 +121,7 @@ void checkBoundary(GsVec center, GsVec velocity, int radius, int canvasSize) {
 		velocity.z = velocity.z * -1;
 }
 
-SnPrimitive *sphereA, *sphereB;
+
 
 float influenceFromSources(GsPnt location) {
 	float influence = 0;
@@ -127,9 +129,16 @@ float influenceFromSources(GsPnt location) {
 	//sphereA->
 }
 
+void updateSpheres()
+{
+	spherePosition[0] += sphereVelocity[0];
+	spherePosition[1] += sphereVelocity[1];
+}
+
 
 void MyViewer::build_scene ()
 {
+	
 	int resolution = 3;
 
 	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
@@ -173,20 +182,44 @@ void MyViewer::build_scene ()
 		}
 	}
 	*/
-	sphereA = new SnPrimitive(GsPrimitive::Sphere, 0.5);
-	sphereA->prim().material.diffuse = GsColor::red;
+
+	if (!initialized)
+	{
+		sphereA = new SnPrimitive(GsPrimitive::Sphere, 0.5);
+		sphereA->prim().material.diffuse = GsColor::red;
+		sphereB = new SnPrimitive(GsPrimitive::Sphere, 0.5);
+		sphereB->prim().material.diffuse = GsColor::red;
+		initialized = true;
+	}
+	
 	add_model(sphereA, spherePosition[0]);
-
-	sphereB = new SnPrimitive(GsPrimitive::Sphere, 0.5);
-	sphereB->prim().material.diffuse = GsColor::red;
 	add_model(sphereB, spherePosition[1]);
-
+	
 	
 }
 
 // Below is an example of how to control the main loop of an animation:
 void MyViewer::run_animation ()
 {
+	
+		updateSpheres();
+		SnManipulator* manip = rootg()->get<SnManipulator>(0); // access one of the manipulators
+		GsMat m = manip->mat();
+		m.setc4(spherePosition[0].x, spherePosition[0].y, spherePosition[0].z, 1);
+		manip->initial_mat(m);
+
+		SnManipulator* manip2 = rootg()->get<SnManipulator>(1); // access one of the manipulators
+		GsMat m2 = manip2->mat();
+		m2.setc4(spherePosition[1].x, spherePosition[1].y, spherePosition[1].z, 1);
+		manip2->initial_mat(m2);
+		//rootg()->remove_all();
+
+		//add_model(sphereA, spherePosition[0]);
+		//add_model(sphereB, spherePosition[1]);
+
+		render(); // notify it needs redraw
+		ws_check(); // redraw now
+
 	
 }
 
