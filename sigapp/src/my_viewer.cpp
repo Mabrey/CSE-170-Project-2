@@ -195,21 +195,24 @@ void MyViewer::build_scene ()
 	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
 		
-	/*
 	for (int i = 0; i < resolution; i++)
 	{
 		for (int j = 0; j < resolution; j++)
 		{
 			for (int k = 0; k < resolution; k++)
 			{
+				march.gridCubes[i][j][k].findMidpoints();
+
+				/*
 				GsModel* m = new GsModel;
 				
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
+				*/
 			}
 		}
 	}
-	*/
+	
 
 
 /*	for (int i = 0; i < resolution; i++)
@@ -251,9 +254,26 @@ void MyViewer::run_animation ()
 		GsMat m2 = manip2->mat();
 		m2.setc4(spherePosition[1].x, spherePosition[1].y, spherePosition[1].z, 1);
 		manip2->initial_mat(m2);
-		checkBoundary();
-		
+		checkBoundary();	
 		updateGrid();
+
+		for (int i = 0; i < resolution; i++)
+		{
+			for (int j = 0; j < resolution; j++)
+			{
+				for (int k = 0; k < resolution; k++)
+				{
+					GsModel *m = new GsModel();
+					march.gridCubes[i][j][k].findFaces(m);
+					SnGroup* g = new SnGroup();
+					g->separator(true);
+					g->add(new SnModel(m));
+					g->top<SnModel>()->color(GsColor::blue);
+					rootg()->add(g);
+				}
+			}
+		}
+
 
 		render(); // notify it needs redraw
 		ws_check(); // redraw now

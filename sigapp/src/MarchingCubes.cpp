@@ -209,8 +209,11 @@ void Cube::findFaces(GsModel* m) {
 	GsModel::Face f1;
 	for (int i = 0; i < 15; i += 3) {
 		if (faces[config][i] != -1) {
+			m->V.push( GsPnt( midpoints[ faces[config][i] ].point ));
+			m->V.push(GsPnt(midpoints[faces[config][i + 1]].point));
+			m->V.push(GsPnt(midpoints[faces[config][i + 2]].point));
 
-			f1.set(faces[config][i], faces[config][i + 1], faces[config][i + 2]);
+			f1.set(i, i + 1, i + 2);
 			m->F.push(f1);
 		}
 	}
