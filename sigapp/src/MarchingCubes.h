@@ -12,6 +12,7 @@ public:
 	GsPnt point;
 	float value;
 	bool isInside;
+	float *cornerVal;
 
 	Points();
 	Points(float x, float y, float z);
@@ -46,7 +47,7 @@ public:
 	int resolution;
 
 	ThreeD<Points> generateGrid(int resolution);
-	ThreeD<Cube> generateCubes(ThreeD<Points> gridPoints, int resolution);
+	ThreeD<Cube> generateCubes(ThreeD<Points> &gridPoints, int resolution);
 
 };
 

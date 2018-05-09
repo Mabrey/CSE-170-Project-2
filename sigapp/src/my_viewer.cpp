@@ -19,6 +19,9 @@ std::vector<GsVec> sphereVelocity = vector<GsVec>(2);
 bool initialized = false;
 SnPrimitive *sphereA, *sphereB;
 MarchingCubes march;
+int resolution = 3;
+float threshhold = 1;
+int cubeCount;
 
 MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,w,h,l)
 {
@@ -160,25 +163,39 @@ void updateSpheres()
 
 void updateGrid()
 {
+	for (int i = 0; i < resolution; i++)
+		for (int j = 0; j < resolution; j++)
+			for (int k = 0; k < resolution; k++)
+			{
+				march.gridPoints[i][j][k].value = influenceFromSources(march.gridPoints[i][j][k].point);
+				if (march.gridPoints[i][j][k].value > threshhold)
+					march.gridPoints[i][j][k].isInside = true;
+				else march.gridPoints[i][j][k].isInside = false;
+			}
 	return;
 }
 
 void MyViewer::build_scene ()
 {
-	
-	int resolution = 3;
+	sphereA = new SnPrimitive(GsPrimitive::Sphere, 1);
+	sphereA->prim().material.diffuse = GsColor::red;
+	sphereB = new SnPrimitive(GsPrimitive::Sphere, 1);
+	sphereB->prim().material.diffuse = GsColor::red;
+	initialized = true;
+
+	add_model(sphereA, spherePosition[0]);
+	add_model(sphereB, spherePosition[1]);
 
 	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
 	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
-	
+
 	march = MarchingCubes();
 
 	//retrieve grid points and store in ThreeD vec
 	march.gridPoints = march.generateGrid(resolution);
 	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
-	
-	
-	
+		
+	/*
 	for (int i = 0; i < resolution; i++)
 	{
 		for (int j = 0; j < resolution; j++)
@@ -192,7 +209,7 @@ void MyViewer::build_scene ()
 			}
 		}
 	}
-	
+	*/
 
 
 /*	for (int i = 0; i < resolution; i++)
@@ -210,21 +227,7 @@ void MyViewer::build_scene ()
 			}
 		}
 	}
-	*/
-
-	if (!initialized)
-	{
-		sphereA = new SnPrimitive(GsPrimitive::Sphere, 1);
-		sphereA->prim().material.diffuse = GsColor::red;
-		sphereB = new SnPrimitive(GsPrimitive::Sphere, 1);
-		sphereB->prim().material.diffuse = GsColor::red;
-		initialized = true;
-	}
-	
-	add_model(sphereA, spherePosition[0]);
-	add_model(sphereB, spherePosition[1]);
-	
-	
+	*/	
 }
 
 // Below is an example of how to control the main loop of an animation:
@@ -249,10 +252,8 @@ void MyViewer::run_animation ()
 		m2.setc4(spherePosition[1].x, spherePosition[1].y, spherePosition[1].z, 1);
 		manip2->initial_mat(m2);
 		checkBoundary();
-		//rootg()->remove_all();
-
-		//add_model(sphereA, spherePosition[0]);
-		//add_model(sphereB, spherePosition[1]);
+		
+		updateGrid();
 
 		render(); // notify it needs redraw
 		ws_check(); // redraw now

@@ -38,7 +38,7 @@ ThreeD<Points> MarchingCubes::generateGrid(int resolution)
 
 
 
-ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> gridPoints, int resolution)
+ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> &gridPoints, int resolution)
 {
 	int canvasSize = 10;
 	ThreeD<Cube> gridCube = ThreeD<Cube>(resolution, vector<vector<Cube>>(resolution, vector<Cube>(resolution)));
@@ -47,41 +47,52 @@ ThreeD<Cube> MarchingCubes::generateCubes(ThreeD<Points> gridPoints, int resolut
 			for (int k = 0; k < resolution; k++)
 			{
 				vector<Points> corners(8);
-				
+
 				//back bottom left
 				Points temp = Points(gridPoints[i][j][k].point.x, gridPoints[i][j][k].point.y, gridPoints[i][j][k].point.z);
 				corners[0] = temp;
+				*corners[0].cornerVal = gridPoints[i][j][k].value;
 
 				//front bottom left
 				temp = Points(gridPoints[i][j][k + 1].point.x, gridPoints[i][j][k + 1].point.y, gridPoints[i][j][k + 1].point.z);
 				corners[1] = temp;
+				*corners[1].cornerVal = gridPoints[i][j][k + 1].value;
 
 				//back upper left
-				temp = Points(gridPoints[i][j+1][k].point.x, gridPoints[i][j+1][k].point.y, gridPoints[i][j+1][k].point.z);
+				temp = Points(gridPoints[i][j + 1][k].point.x, gridPoints[i][j + 1][k].point.y, gridPoints[i][j + 1][k].point.z);
 				corners[3] = temp;
+				*corners[3].cornerVal = gridPoints[i][j + 1][k].value;
 
 				//front upper left
-				temp = Points(gridPoints[i][j + 1][k+1].point.x, gridPoints[i][j + 1][k+1].point.y, gridPoints[i][j + 1][k+1].point.z);
+				temp = Points(gridPoints[i][j + 1][k + 1].point.x, gridPoints[i][j + 1][k + 1].point.y, gridPoints[i][j + 1][k + 1].point.z);
 				corners[2] = temp;
+				*corners[2].cornerVal = gridPoints[i][j + 1][k + 1].value;
 
 				//back bottom right
-				temp = Points(gridPoints[i+1][j][k].point.x, gridPoints[i + 1][j][k].point.y, gridPoints[i + 1][j][k].point.z);
+				temp = Points(gridPoints[i + 1][j][k].point.x, gridPoints[i + 1][j][k].point.y, gridPoints[i + 1][j][k].point.z);
 				corners[4] = temp;
+				*corners[4].cornerVal = gridPoints[i + 1][j][k].value;
 
 				//front bottom right
 				temp = Points(gridPoints[i + 1][j][k + 1].point.x, gridPoints[i + 1][j][k + 1].point.y, gridPoints[i + 1][j][k + 1].point.z);
 				corners[5] = temp;
+				*corners[5].cornerVal = gridPoints[i + 1][j][k + 1].value;
 
 				//back upper right
 				temp = Points(gridPoints[i + 1][j + 1][k].point.x, gridPoints[i + 1][j + 1][k].point.y, gridPoints[i + 1][j + 1][k].point.z);
 				corners[7] = temp;
+				*corners[7].cornerVal = gridPoints[i + 1][j + 1][k].value;
 
 				//front upper right
 				temp = Points(gridPoints[i + 1][j + 1][k + 1].point.x, gridPoints[i + 1][j + 1][k + 1].point.y, gridPoints[i + 1][j + 1][k + 1].point.z);
 				corners[6] = temp;
+				*corners[6].cornerVal = gridPoints[i + 1][j + 1][k + 1].value;
 
 
-				Cube newCube = Cube(gridPoints[i][j][k].point.x + (canvasSize / ((float) resolution * 2)), gridPoints[i][j][k].point.y + (canvasSize / ((float)resolution * 2)), gridPoints[i][j][k].point.z + (canvasSize / ((float)resolution * 2)), corners);
+				Cube newCube = Cube(gridPoints[i][j][k].point.x + (canvasSize / ((float)resolution * 2)),
+					gridPoints[i][j][k].point.y + (canvasSize / ((float)resolution * 2)),
+					gridPoints[i][j][k].point.z + (canvasSize / ((float)resolution * 2)), corners);
+
 				gridCube[i][j][k] = newCube;
 			}
 	
