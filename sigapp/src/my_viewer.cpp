@@ -101,16 +101,17 @@ void generateFaces(Cube cube, GsModel * m)
 
 }
 
-void checkBoundary(GsVec velocity, int radius, int canvasSize) {
+void checkBoundary(GsVec center, GsVec velocity, int radius, int canvasSize) {
 
-	if (velocity.x + radius > canvasSize / 2 || velocity.x + radius < (canvasSize * -1) / 2)
+	if (center.x + radius > canvasSize / 2 || center.x + radius < (canvasSize * -1) / 2)
 		velocity.x = velocity.x * -1;
-	else if (velocity.y + radius > canvasSize / 2 || velocity.y + radius < (canvasSize * -1) / 2)
+	else if (center.y + radius > canvasSize / 2 || center.y + radius < (canvasSize * -1) / 2)
 		velocity.y = velocity.y * -1;
-	else if (velocity.x + radius > canvasSize / 2 || velocity.x + radius < (canvasSize * -1) / 2)
+	else if (center.x + radius > canvasSize / 2 || center.x + radius < (canvasSize * -1) / 2)
 		velocity.z = velocity.z * -1;
 }
 
+SnPrimitive *sphereA, *sphereB;
 
 void MyViewer::build_scene ()
 {
@@ -140,7 +141,7 @@ void MyViewer::build_scene ()
 				
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
-				gsout << "velocity: " << march.gridCubes[i][j][k].velocity << "\n";
+				gsout << "center: " << march.gridCubes[i][j][k].center << "\n";
 			
 			}
 		}
@@ -161,6 +162,14 @@ void MyViewer::build_scene ()
 			}
 		}
 	}
+	
+	sphereA = new SnPrimitive(GsPrimitive::Sphere, 2);
+	sphereA->prim().material.diffuse = GsColor::red;
+	add_model(sphereA, GsVec(-5, 0, 0));
+
+	sphereB = new SnPrimitive(GsPrimitive::Sphere, 2);
+	sphereB->prim().material.diffuse = GsColor::red;
+	add_model(sphereB, GsVec(5, 0, 0));
 }
 
 // Below is an example of how to control the main loop of an animation:
