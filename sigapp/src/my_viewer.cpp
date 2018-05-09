@@ -14,6 +14,7 @@
 template <typename T>
 using ThreeD = std::vector<std::vector<std::vector<T>>>;
 
+
 MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,w,h,l)
 {
 	_nbut=0;
@@ -102,46 +103,58 @@ void generateFaces(Cube cube, GsModel * m)
 
 void MyViewer::build_scene ()
 {
+	int resolution = 2;
+
+	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
+	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
+
+	bool boundBox = true;
 	
-
-	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(4, vector<vector<GsModel*>>(4, vector<GsModel*>(4)));
-	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(4, vector<vector<SnGroup*>>(4, vector<SnGroup*>(4)));
-
 
 	MarchingCubes march = MarchingCubes();
 
 	//retrieve grid points and store in ThreeD vec
-	march.gridPoints = march.generateGrid(5);
-	march.gridCubes = march.generateCubes(march.gridPoints, 5);
+	march.gridPoints = march.generateGrid(resolution + 1);
+	march.gridCubes = march.generateCubes(march.gridPoints, resolution);
 	
 	
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < resolution; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < resolution; j++)
 		{
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < resolution; k++)
 			{
 				int sizeI = march.gridCubes.at(i).size();
 				int sizeJ = march.gridCubes.at(i).at(j).size();
 				int size = march.gridCubes.size();
 				GsModel* m = new GsModel;
+				
 				generateFaces(march.gridCubes[i][j][k], m);
 				gridOfCubes[i][j][k] = m;
+
+				GsBox* b = new GsBox;
+				m->get_bounding_box(*b);
+				
+				gsout << march.gridCubes[i][j][k].center << "\n";
+
+
+
 			}
 		}
 	}
 
-	for (int i = 0; i < 4; i++) 
+	for (int i = 0; i < resolution; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < resolution; j++)
 		{
-			for (int k = 0; k < 4; k++)
+			for (int k = 0; k < resolution; k++)
 			{
 				snGroups[i][j][k] = new SnGroup;
 				snGroups[i][j][k]->separator(true);
 				snGroups[i][j][k]->add(new SnModel(gridOfCubes.at(i).at(j).at(k)));
 				snGroups[i][j][k]->top<SnModel>()->color(GsColor::blue);
 				rootg()->add(snGroups[i][j][k]);
+				
 			}
 		}
 	}
