@@ -180,6 +180,8 @@ void MyViewer::build_scene ()
 	sphereB = new SnPrimitive(GsPrimitive::Sphere, 0.5);
 	sphereB->prim().material.diffuse = GsColor::red;
 	add_model(sphereB, spherePosition[1]);
+
+	
 }
 
 // Below is an example of how to control the main loop of an animation:
