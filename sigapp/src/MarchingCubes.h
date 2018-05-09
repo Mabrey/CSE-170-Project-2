@@ -6,13 +6,15 @@
 # include <vector>
 using namespace std;
 
-class Corner {
+
+class Points {
 public:
 	GsPnt point;
 	float value;
+	bool isInside;
 
-	Corner();
-	Corner(float x, float y, float z);
+	Points();
+	Points(float x, float y, float z);
 };
 
 class Cube {
@@ -20,11 +22,11 @@ public:
 	GsPnt center;
 	//float size;
 	float value;
-	vector<Corner> corners;
+	vector<Points> corners;
 
 	Cube();
 	Cube(float x, float y, float z);
-	Cube(float x, float y, float z, vector<Corner> newCorners);
+	Cube(float x, float y, float z, vector<Points> newCorners);
 };
 
 class MarchingCubes

@@ -73,16 +73,16 @@ void generateFaces(Cube cube, GsModel * m)
 		m->V.push(cube.corners[i].point);
 	}
 
-	f1.set(0, 2, 6);	//back face 1
-	f2.set(0, 6, 4);	//back face 2
-	f3.set(0, 1, 3);	//left face 1
-	f4.set(0, 3, 2);	//left face 2
-	f5.set(1, 5, 7);	//front face 1
-	f6.set(1, 7, 3);	//front face 2
-	f7.set(5, 4, 6);	//right face 1
-	f8.set(5, 6, 7);	//right face 2
-	f9.set(3, 7, 6);	//top face 1
-	f10.set(3, 6, 2);	//top face 2
+	f1.set(0, 3, 7);	//back face 1
+	f2.set(0, 7, 4);	//back face 2
+	f3.set(0, 1, 2);	//left face 1
+	f4.set(0, 2, 3);	//left face 2
+	f5.set(1, 5, 6);	//front face 1
+	f6.set(1, 6, 2);	//front face 2
+	f7.set(5, 4, 7);	//right face 1
+	f8.set(5, 7, 6);	//right face 2
+	f9.set(2, 6, 7);	//top face 1
+	f10.set(2, 7, 3);	//top face 2
 	f11.set(0, 4, 5);	//bottom face 1
 	f12.set(0, 5, 1);	//bottom face 2
 
@@ -107,10 +107,7 @@ void MyViewer::build_scene ()
 
 	ThreeD<GsModel*> gridOfCubes = ThreeD<GsModel*>(resolution, vector<vector<GsModel*>>(resolution, vector<GsModel*>(resolution)));
 	ThreeD<SnGroup*> snGroups = ThreeD<SnGroup*>(resolution, vector<vector<SnGroup*>>(resolution, vector<SnGroup*>(resolution)));
-
-	bool boundBox = true;
 	
-
 	MarchingCubes march = MarchingCubes();
 
 	//retrieve grid points and store in ThreeD vec
