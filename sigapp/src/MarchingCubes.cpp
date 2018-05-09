@@ -182,6 +182,17 @@ void Cube::findMidpoints() {
 	midpoints.push_back(temp);
 }
 
+void Cube::findConfig() {
+
+	config = 0;
+	vector<int> possibleConfigs = { 1, 2, 4, 8, 16, 32, 64, 128 };
+	//for each corner in the cube, check if its
+	for (int i = 0; i < 8; i++) {
+		if (corners[i].isInside)
+			config += possibleConfigs[i];
+	}
+}
+
 
 Points::Points() 
 {

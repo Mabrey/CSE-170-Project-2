@@ -22,6 +22,7 @@ public:
 	GsPnt center;
 	//float size;
 	float value;
+	int config;
 	vector<Points> corners;
 	vector<Points> midpoints;
 
@@ -30,6 +31,7 @@ public:
 	Cube(float x, float y, float z, vector<Points> newCorners);
 
 	void findMidpoints();
+	void findConfig();
 };
 
 class MarchingCubes
