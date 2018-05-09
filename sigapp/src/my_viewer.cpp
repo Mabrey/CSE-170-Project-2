@@ -23,11 +23,11 @@ MyViewer::MyViewer ( int x, int y, int w, int h, const char* l ) : WsViewer(x,y,
 {
 	_nbut=0;
 	_animating=false;
-	spherePosition[0] = (GsVec(gs_random(-2, 2), gs_random(-2, 2), gs_random(-2, 2)));
-	spherePosition[1] = (GsVec(gs_random(-2, 2), gs_random(-2, 2), gs_random(-2, 2)));
+	spherePosition[0] = (GsVec(-4, -4, -4));
+	spherePosition[1] = (GsVec(4, 4, 4));
 
-	sphereVelocity[0] = (GsVec(0.1f * gs_random(-5, 5), 0.1f *gs_random(-5, 5), 0.1f * gs_random(-5, 5)));
-	sphereVelocity[1] = (GsVec(0.1f *gs_random(-5, 5), 0.1f * gs_random(-5, 5), 0.1f * gs_random(-5, 5)));
+	sphereVelocity[0] = (GsVec(0.01f * (rand() % 10 - 5), 0.01f * (rand() % 10 - 5), 0.01f * (rand() % 10 - 5)));
+	sphereVelocity[1] = (GsVec(-0.02, .05, .03));
 
 	build_ui ();
 	build_scene ();
@@ -113,21 +113,21 @@ void generateFaces(Cube cube, GsModel * m)
 
 void checkBoundary()
 {
-	float radius = 0.5;
+	float radius = 1;
 	int canvasSize = 10;
 
-	if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
-		sphereVelocity[0].x = sphereVelocity[1].x * -1;
-	else if (spherePosition[0].y + radius > canvasSize / 2 || spherePosition[1].y + radius < (canvasSize * -1) / 2)
-		sphereVelocity[0].y = sphereVelocity[1].y * -1;
-	else if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
-		sphereVelocity[0].z = sphereVelocity[1].z * -1;
+	if (spherePosition[0].x + radius > canvasSize / 2 || spherePosition[0].x + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].x = sphereVelocity[0].x * -1;
+	else if (spherePosition[0].y + radius > canvasSize / 2 || spherePosition[0].y + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].y = sphereVelocity[0].y * -1;
+	else if (spherePosition[0].z + radius > canvasSize / 2 || spherePosition[0].z + radius < (canvasSize * -1) / 2)
+		sphereVelocity[0].z = sphereVelocity[0].z * -1;
 
 	if (spherePosition[1].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
 		sphereVelocity[1].x = sphereVelocity[1].x * -1;
 	else if (spherePosition[1].y + radius > canvasSize / 2 || spherePosition[1].y + radius < (canvasSize * -1) / 2)
 		sphereVelocity[1].y = sphereVelocity[1].y * -1;
-	else if (spherePosition[1].x + radius > canvasSize / 2 || spherePosition[1].x + radius < (canvasSize * -1) / 2)
+	else if (spherePosition[1].z + radius > canvasSize / 2 || spherePosition[1].z + radius < (canvasSize * -1) / 2)
 		sphereVelocity[1].z = sphereVelocity[1].z * -1;
 }
 
@@ -195,9 +195,9 @@ void MyViewer::build_scene ()
 
 	if (!initialized)
 	{
-		sphereA = new SnPrimitive(GsPrimitive::Sphere, 0.5);
+		sphereA = new SnPrimitive(GsPrimitive::Sphere, 1);
 		sphereA->prim().material.diffuse = GsColor::red;
-		sphereB = new SnPrimitive(GsPrimitive::Sphere, 0.5);
+		sphereB = new SnPrimitive(GsPrimitive::Sphere, 1);
 		sphereB->prim().material.diffuse = GsColor::red;
 		initialized = true;
 	}
